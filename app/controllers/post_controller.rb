@@ -14,6 +14,6 @@ end
   def new
   end
 
-  def editgit 
+  def edit
   end
 end
