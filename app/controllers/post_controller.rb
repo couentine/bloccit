@@ -1,11 +1,11 @@
 class PostController < ApplicationController
   def index
-    @posts = Post.all
-    @Posts.each_with_index do |post, index|
+    @posts= Post.all
+   @posts.each_with_index do |post, index|
       if index%5 == 0 
-        post.title= "SPAM"
-      end
-    end
+      post.title= "SPAM"
+     end
+end
   end
 
   def show
@@ -14,6 +14,6 @@ class PostController < ApplicationController
   def new
   end
 
-  def edit
+  def editgit 
   end
 end
