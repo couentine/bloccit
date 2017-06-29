@@ -12,7 +12,7 @@ RSpec.describe PostsController, type: :controller do
       
     it "assigns [my_post] to @posts" do
     get :index
-        
+        git push huraku
         expect(assigns(:posts)).to eq([my_post])
     end         
   end
