@@ -8,6 +8,14 @@
  end
  
  topics= Topic.all
+ 
+  15.times do
+   SponsoredPost.create!(
+     name:         RandomData.random_sentence,
+     description:  RandomData.random_paragraph
+   )
+ end
+ sponsored_posts = SponsoredPost.all
 
  50.times do
 
