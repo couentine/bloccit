@@ -5,6 +5,8 @@
 
 resources :users, only: [:new, :create]
 
+ post 'users/confirm' => 'users#confirm'
+
    get 'about' => 'welcome#about'
 
    root 'welcome#index'
