@@ -1,12 +1,27 @@
- Rails.application.routes.draw do
+Rails.application.routes.draw do
+
+  resources :questions
+
+  resources :advertisements
+  
+  post 'users/confirm' => 'users#confirm'
+  
+  post 'users/new' => 'users#new'
+  
   resources :topics do
   resources :posts, except: [:index]
-   end
+  end
 
-resources :users, only: [:new, :create]
+  resources :topics do
+    resources :sponsored_posts, except: [:index]
+  end
 
-   get 'about' => 'welcome#about'
+  resources :users, only: [:new, :create]
+  
+  get 'about' => 'welcome#about'
 
-   root 'welcome#index'
-   
- end
+  root 'welcome#index'
+
+  resources :sessions, only: [:new, :create, :destroy]
+
+end
