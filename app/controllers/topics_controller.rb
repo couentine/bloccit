@@ -1,4 +1,7 @@
 class TopicsController < ApplicationController
+  before_action :require_sign_in, except: [:index, :show]
+  before_action :authorize_user, except: [:index, :show]
+
   def index
     @topics = Topic.all
   end
@@ -17,7 +20,7 @@ class TopicsController < ApplicationController
     if @topic.save
       redirect_to @topic, notice: "Topic was saved successfully."
     else
-      flash.now[:alert] = "Error creating topic. Please try again!"
+      flash.now[:alert] = "Error creating topic. Please try again."
       render :new
     end
   end
@@ -32,7 +35,7 @@ class TopicsController < ApplicationController
     @topic.assign_attributes(topic_params)
 
     if @topic.save
-      flash[:notice] = "Topic was updated"
+       flash[:notice] = "Topic was updated."
       redirect_to @topic
     else
       flash.now[:alert] = "Error saving topic. Please try again."
@@ -47,7 +50,7 @@ class TopicsController < ApplicationController
       flash[:notice] = "\"#{@topic.name}\" was deleted successfully."
       redirect_to action: :index
     else
-      flash.now[:alert] = "There was an error deleting this topic."
+      flash.now[:alert] = "There was an error deleting the topic."
       render :show
     end
   end
@@ -58,4 +61,10 @@ class TopicsController < ApplicationController
     params.require(:topic).permit(:name, :description, :public)
   end
 
+  def authorize_user
+    unless current_user.admin?
+      flash[:alert] = "You must be an admin to do that."
+      redirect_to topics_path
+    end
+  end
 end

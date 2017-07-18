@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
 
   before_action :require_sign_in, except: :show
+  before_action :authorize_user, except: [:show, :new, :create]
+
 
   def show
     @post = Post.find(params[:id])
@@ -20,7 +22,7 @@ class PostsController < ApplicationController
       flash[:notice] = "Post was saved."
       redirect_to [@topic, @post]
     else
-      flash.now[:alert] = "There was an error saving the post. Please try again!"
+      flash.now[:alert] = "There was an error saving the post. Please try again."
       render :new
     end
   end
@@ -30,17 +32,17 @@ class PostsController < ApplicationController
   end
 
   def update
-    @post = Post.find(params[:id])
-    @post.assign_attributes(post_params)
+     @post = Post.find(params[:id])
+     @post.assign_attributes(post_params)
 
-    if @post.save
-      flash[:notice] = "Post was updated"
-      redirect_to [@post.topic, @post]
-    else
-      flash.now[:alert] = "There was an error saving the post. Please try again."
-      render :edit
-    end
-  end
+     if @post.save
+       flash[:notice] = "Post was updated."
+       redirect_to [@post.topic, @post]
+     else
+       flash.now[:alert] = "There was an error saving the post. Please try again."
+       render :edit
+     end
+   end
 
   def destroy
     @post = Post.find(params[:id])
@@ -55,8 +57,15 @@ class PostsController < ApplicationController
   end
 
   private
-
   def post_params
     params.require(:post).permit(:title, :body)
+  end
+
+  def authorize_user
+    post = Post.find(params[:id])
+    unless current_user == post.user || current_user.admin?
+      flash[:alert] = "You must be an admin to do that."
+      redirect_to [post.topic, post]
+    end
   end
 end
