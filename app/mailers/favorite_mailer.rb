@@ -15,11 +15,10 @@ class FavoriteMailer < ApplicationMailer
        
 end
 
-def new_post
+def new_post(post)
     
    headers["Message-ID"] = "<posts/#{post.id}@your-app-name.example>"
    headers["References"] = "<post/#{post.id}@your-app-name.example>"
-   @user = user
    @post = post
    mail(to: user.email, subject: "You've just favorited #{post.title}!")
 end
